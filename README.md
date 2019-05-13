@@ -1,7 +1,9 @@
 # 接口引擎
 > author:wangjiaming
-
-###使用方式
+### 前言
+目前该接口支持restful的快速对接工作，由于日常面对很多restful接口，
+而每次实现该接口都需要编写大量的实现类，故开发这个接口引擎。用户可以通过简单配置application.properties和flowcore.properties实现快速接口对接工作。
+### 使用方式
 
 需要配置的文件
 
