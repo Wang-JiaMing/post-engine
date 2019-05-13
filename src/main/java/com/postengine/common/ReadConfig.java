@@ -14,19 +14,16 @@ import org.springframework.stereotype.Service;
  **/
 @Slf4j
 @Service
-public class ReadConfig {
-
-    private static final String APPLICATIONNAME="application";
-
-
+public class ReadConfig{
     static {
-        log.info("~~~~~~~~~~~预浏览配置文件begin~~~~~~~~~~~");
-        log.info("JDBC_URL:"+PropertiesUtils.getProperties(APPLICATIONNAME,"spring.datasource.druid.url"));
-        log.info("JDBC_USERNAME:"+PropertiesUtils.getProperties(APPLICATIONNAME,"spring.datasource.druid.username"));
-        log.info("JDBC_PASSWORD:"+PropertiesUtils.getProperties(APPLICATIONNAME,"spring.datasource.druid.password"));
-        log.info("引擎队列:"+PropertiesUtils.getProperties(APPLICATIONNAME,"flow.post.queue"));
-        log.info("引擎作业时间:"+PropertiesUtils.getProperties(APPLICATIONNAME,"flow.port.jsontime"));
-        log.info("~~~~~~~~~~~预浏览配置文件end~~~~~~~~~~~");
+        log.info("~~~~~~~~~~~预浏览外部配置文件begin~~~~~~~~~~~");
+        log.info("dirPath"+InitConfig.DIRPATH);
+        log.info("JDBC_URL:" + PropertiesUtils.getPropertiesByPath(InitConfig.DIRPATH+InitConfig.APPLICATION+".properties", "spring.datasource.druid.url"));
+        log.info("JDBC_USERNAME:" + PropertiesUtils.getPropertiesByPath(InitConfig.DIRPATH+InitConfig.APPLICATION+".properties", "spring.datasource.druid.username"));
+        log.info("JDBC_PASSWORD:" + PropertiesUtils.getPropertiesByPath(InitConfig.DIRPATH+InitConfig.APPLICATION+".properties", "spring.datasource.druid.password"));
+        log.info("引擎队列:" + PropertiesUtils.getPropertiesByPath(InitConfig.DIRPATH+InitConfig.FLOWCORE+".properties", "flow.post.queue"));
+        log.info("引擎作业时间:" + PropertiesUtils.getPropertiesByPath(InitConfig.DIRPATH+InitConfig.FLOWCORE+".properties", "flow.port.jobtime"));
+        log.info("~~~~~~~~~~~预浏览外部配置文件end~~~~~~~~~~~");
     }
 
 }

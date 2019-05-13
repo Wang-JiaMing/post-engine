@@ -1,6 +1,7 @@
 package com.postengine.core;
 
 
+import com.postengine.common.InitConfig;
 import com.postengine.common.SqlFlow;
 import com.wangjiaming.expansion.readProperties.PropertiesUtils;
 
@@ -17,10 +18,10 @@ import java.util.List;
  **/
 public class AnalysisSqlFlow {
 
-   public static final String PROPERTIESFILENAME="application";
+
 
    public List<SqlFlow> analysis(){
-       String quenu= PropertiesUtils.getProperties(PROPERTIESFILENAME,"flow.post.queue");
+       String quenu= PropertiesUtils.getPropertiesByPath(InitConfig.DIRPATH+InitConfig.FLOWCORE+".properties","flow.post.queue");
        if(quenu.equals("")){
            try {
                throw new Exception("sqlflow.properties的必备参数flow.post.queue缺失");
@@ -33,10 +34,10 @@ public class AnalysisSqlFlow {
            List<SqlFlow> sqlFlows=new ArrayList<>(quenuSz.length);
            for(int i=0;i<quenuSz.length;i++){
                SqlFlow sqlFlow=new SqlFlow();
-               sqlFlow.setUrl(PropertiesUtils.getProperties(PROPERTIESFILENAME,"flow.post.url."+quenuSz[i]));
-               sqlFlow.setSql(PropertiesUtils.getProperties(PROPERTIESFILENAME,"flow.post.sql."+quenuSz[i]));
-               sqlFlow.setConstant(PropertiesUtils.getProperties(PROPERTIESFILENAME,"flow.post.constant."+quenuSz[i]));
-               sqlFlow.setReplaceStr(PropertiesUtils.getProperties(PROPERTIESFILENAME,"flow.post.replace."+quenuSz[i]));
+               sqlFlow.setUrl(PropertiesUtils.getPropertiesByPath(InitConfig.DIRPATH+InitConfig.FLOWCORE+".properties","flow.post.url."+quenuSz[i]));
+               sqlFlow.setSql(PropertiesUtils.getPropertiesByPath(InitConfig.DIRPATH+InitConfig.FLOWCORE+".properties","flow.post.sql."+quenuSz[i]));
+               sqlFlow.setConstant(PropertiesUtils.getPropertiesByPath(InitConfig.DIRPATH+InitConfig.FLOWCORE+".properties","flow.post.constant."+quenuSz[i]));
+               sqlFlow.setReplaceStr(PropertiesUtils.getPropertiesByPath(InitConfig.DIRPATH+InitConfig.FLOWCORE+".properties","flow.post.replace."+quenuSz[i]));
                sqlFlows.add(sqlFlow);
            }
            return sqlFlows;

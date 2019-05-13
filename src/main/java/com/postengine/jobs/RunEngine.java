@@ -3,6 +3,7 @@ package com.postengine.jobs;
 import com.postengine.core.EngineCore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,8 @@ import org.springframework.stereotype.Component;
  * @other:
  **/
 @Component
-@PropertySource("classpath:sqlflow.properties")
+@Configuration
+@PropertySource(value = "file:${flowcore.path}",ignoreResourceNotFound = true)
 @Slf4j
 public class RunEngine {
 
@@ -24,7 +26,7 @@ public class RunEngine {
     EngineCore engineCore;
 
     //每隔2秒执行一次
-    @Scheduled(cron = "${flow.port.jsontime}")
+    @Scheduled(cron = "${flow.port.jobtime}")
     public void testTasks() {
         log.info("===============启动定时作业===============");
         engineCore.core();
