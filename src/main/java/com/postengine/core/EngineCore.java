@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.postengine.common.RestTemplatesUtils;
 import com.postengine.common.SqlFlow;
 import com.postengine.dao.mapper.IDataSourcePost;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,51 +22,54 @@ import java.util.Map;
  * @other:接口引擎主方法入口
  **/
 @Service
+@Slf4j
 public class EngineCore {
-
-    private static Logger logger = LoggerFactory.getLogger(EngineCore.class);
 
     @Autowired
     IDataSourcePost dataSourcePost;
+
     /**
      * 核心方法
      */
     public void core() {
-        logger.info("-----运行接口引擎-----");
         /**
          * http请求准备工作
          */
 
         AnalysisSqlFlow analysisSqlFlow = new AnalysisSqlFlow();
         List<SqlFlow> sqlFlows = analysisSqlFlow.analysis();
+        log.info("------------一共存在" + sqlFlows.size() + "个接口队列------------");
         for (SqlFlow sqlFlow : sqlFlows) {
-            if(sqlFlow.getConstant()!=null){
+            if (sqlFlow.getConstant() != null) {
+                log.info("------------进入常量接口------------");
 
-            }else if(sqlFlow.getSql()!=null) {
+            } else if (sqlFlow.getSql() != null) {
+                log.info("------------进入sql动态接口------------");
                 List<Map<Object, Object>> results = dataSourcePost.dataPost(sqlFlow.getSql());
                 String json = JSON.toJSONString(results);
-                json=json.replaceAll("\\[\\{", "{").replaceAll("}]", "}");
-                if(sqlFlow.getReplaceStr()!=null) {
-                    String[] replaceStr=sqlFlow.getReplaceStr().split(";");
-                    for(int i=0;i<replaceStr.length;i++){
-                        String[] field=replaceStr[i].split("-");
-                        json=json.replaceAll("\""+field[0]+"\"","\""+field[1]+"\"");
+                json = json.replaceAll("\\[\\{", "{").replaceAll("}]", "}");
+                if (sqlFlow.getReplaceStr() != null) {
+                    String[] replaceStr = sqlFlow.getReplaceStr().split(";");
+                    for (int i = 0; i < replaceStr.length; i++) {
+                        String[] field = replaceStr[i].split("-");
+                        json = json.replaceAll("\"" + field[0] + "\"", "\"" + field[1] + "\"");
                     }
                 }
-                if(sqlFlow.getUrl()!=null) {
+                log.info("------------sql动态接口传递json:" + json + "------------");
+                log.info("------------动态接口配置url为:" + sqlFlow.getUrl() + "------------");
+                if (sqlFlow.getUrl() != null) {
                     String result = RestTemplatesUtils.postJsonToUrl(sqlFlow.getUrl(), json);
-                    logger.info("json参数:<"+json+"> ;接口URL:<"+sqlFlow.getUrl()+">;接口返回消息:<"+result);
+                    log.info("json参数:<" + json + "> ;接口URL:<" + sqlFlow.getUrl() + ">;接口返回消息:<" + result);
                 }
-            }else{
-                try{
+            } else {
+                try {
+                    log.error("------------constant和sql两者必须配置其中一个------------");
                     throw new Exception("constant和sql两者必须配置其中一个");
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-        logger.info("-----结束接口引擎-----");
-
     }
 
 }

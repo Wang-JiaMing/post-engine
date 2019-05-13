@@ -17,7 +17,7 @@ import java.util.List;
  **/
 public class AnalysisSqlFlow {
 
-   public static final String PROPERTIESFILENAME="sqlflow";
+   public static final String PROPERTIESFILENAME="application";
 
    public List<SqlFlow> analysis(){
        String quenu= PropertiesUtils.getProperties(PROPERTIESFILENAME,"flow.post.queue");
