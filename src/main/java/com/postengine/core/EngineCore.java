@@ -41,25 +41,23 @@ public class EngineCore {
         log.info("一共存在" + sqlFlows.size() + "个接口队列");
         for (SqlFlow sqlFlow : sqlFlows) {
             if (sqlFlow.getConstant() != null) {
-                log.info("进入常量接口");
 
             } else if (sqlFlow.getSql() != null) {
-                log.info("进入sql动态接口");
                 List<Map<Object, Object>> results = dataSourcePost.dataPost(sqlFlow.getSql());
-                String json = JSON.toJSONString(results);
-                json = json.replaceAll("\\[\\{", "{").replaceAll("}]", "}");
-                if (sqlFlow.getReplaceStr() != null) {
-                    String[] replaceStr = sqlFlow.getReplaceStr().split(";");
-                    for (int i = 0; i < replaceStr.length; i++) {
-                        String[] field = replaceStr[i].split("-");
-                        json = json.replaceAll("\"" + field[0] + "\"", "\"" + field[1] + "\"");
+                for(Map<Object,Object> map:results) {
+                    String json = JSON.toJSONString(map);
+                    json = json.replaceAll("\\[\\{", "{").replaceAll("}]", "}");
+                    if (sqlFlow.getReplaceStr() != null) {
+                        String[] replaceStr = sqlFlow.getReplaceStr().split(";");
+                        for (int i = 0; i < replaceStr.length; i++) {
+                            String[] field = replaceStr[i].split("-");
+                            json = json.replaceAll("\"" + field[0] + "\"", "\"" + field[1] + "\"");
+                        }
                     }
-                }
-                log.info("sql动态接口传递json:" + json + "");
-                log.info("动态接口配置url为:" + sqlFlow.getUrl() + "");
-                if (sqlFlow.getUrl() != null) {
-                    String result = RestTemplatesUtils.postJsonToUrl(sqlFlow.getUrl(), json);
-                    log.info("json参数:<" + json + "> ;接口URL:<" + sqlFlow.getUrl() + ">;接口返回消息:<" + result);
+                    if (sqlFlow.getUrl() != null) {
+                        String result = RestTemplatesUtils.postJsonToUrl(sqlFlow.getUrl(), json);
+                        log.info("json参数:<" + json + "> ;接口URL:<" + sqlFlow.getUrl() + ">;接口返回消息:<" + result);
+                    }
                 }
             } else {
                 try {
