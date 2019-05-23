@@ -5,8 +5,6 @@ import com.postengine.common.RestTemplatesUtils;
 import com.postengine.common.SqlFlow;
 import com.postengine.dao.mapper.IDataSourcePost;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

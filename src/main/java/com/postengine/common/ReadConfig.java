@@ -1,6 +1,6 @@
 package com.postengine.common;
 
-import com.wangjiaming.expansion.readProperties.PropertiesUtils;
+import com.expansion.readProperties.PropertiesUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
