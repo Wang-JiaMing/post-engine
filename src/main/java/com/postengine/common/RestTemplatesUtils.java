@@ -31,7 +31,6 @@ public class RestTemplatesUtils {
         SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
         httpRequestFactory.setReadTimeout(30000);
         httpRequestFactory.setConnectTimeout(5000);
-
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         messageConverters.add(new ByteArrayHttpMessageConverter());
         StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
@@ -41,13 +40,11 @@ public class RestTemplatesUtils {
         messageConverters.add(new AllEncompassingFormHttpMessageConverter());
         RestTemplate restTemplate = new RestTemplate(httpRequestFactory);
         restTemplate.setMessageConverters(messageConverters);
-
         HttpHeaders headers = new HttpHeaders();
         MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
         headers.setContentType(type);
         headers.add("Accept", MediaType.APPLICATION_JSON.toString());
         HttpEntity<String> formEntity = new HttpEntity<String>(jsonStr, headers);
-
         String result = restTemplate.postForObject(url, formEntity, String.class);
         return result;
     }

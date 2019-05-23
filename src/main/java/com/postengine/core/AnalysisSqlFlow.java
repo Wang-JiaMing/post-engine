@@ -3,7 +3,7 @@ package com.postengine.core;
 
 import com.postengine.common.InitConfig;
 import com.postengine.common.SqlFlow;
-import com.wangjiaming.expansion.readProperties.PropertiesUtils;
+import com.expansion.readProperties.PropertiesUtils;
 
 import java.util.ArrayList;
 import java.util.List;

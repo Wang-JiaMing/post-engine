@@ -55,7 +55,7 @@
         </dependency>
         <!--工具包-->
         <dependency>
-            <groupId>com.wangjiaming</groupId>
+            <groupId>com.expkit</groupId>
             <artifactId>expansion-utils</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
